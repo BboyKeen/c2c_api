@@ -1,5 +1,5 @@
 from c2corg_api.models.outing import OUTING_TYPE, Outing
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin, QDateRange, \
     QInteger, QBoolean, QLong, QEnumArray, QEnumRange, QPeriod
 from c2corg_api.models.common.sortable_search_attributes import \
@@ -16,7 +16,7 @@ from elasticsearch_dsl import Date
 
 
 class SearchOuting(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = OUTING_TYPE
 
     date_start = Date()

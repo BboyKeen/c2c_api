@@ -6,31 +6,24 @@ from c2corg_api.search.mapping_types import Enum, QEnumArray, QLong, \
 from c2corg_api.models.common.attributes import default_langs
 from c2corg_api.models.common.sortable_search_attributes import \
     sortable_quality_types
-from elasticsearch_dsl import DocType, String, MetaField, Long, GeoPoint
-
-
-class BaseMeta:
-    # disable the '_all' field, see
-    # https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-all-field.html
-    all = MetaField(enabled=False)
-
+from elasticsearch_dsl import Document as ElasticDocument, Text, Keyword, Long, GeoPoint
 
 # for the title fields a simpler analyzer is used.
 # the configuration is based on the one by Photon:
 # https://github.com/komoot/photon/blob/master/es/mappings.json
 # https://github.com/komoot/photon/blob/master/es/index_settings.json
 def default_title_field():
-    return String(
-        index='not_analyzed',
-        similarity='c2corgsimilarity',
+    return Text(
+        index=False,
+        similarity='BM25',
         fields={
-            'ngram': String(
+            'ngram': Text(
                 analyzer='index_ngram', search_analyzer='search_ngram'),
-            'raw': String(
-                analyzer='index_raw', search_analyzer='search_raw')})
+            'raw': Keyword(
+                index=True)})
 
 
-class SearchDocument(DocType):
+class SearchDocument(ElasticDocument):
     """The base ElasticSearch mapping for documents. Each document type has
     its own specific mapping.
 
@@ -45,7 +38,7 @@ class SearchDocument(DocType):
     See also:
     https://www.elastic.co/guide/en/elasticsearch/guide/current/_index_time_search_as_you_type.html
     """
-    class Meta(BaseMeta):
+    class Meta:
         pass
 
     id = Long()
@@ -60,51 +53,51 @@ class SearchDocument(DocType):
 
     # fr
     title_fr = default_title_field()
-    summary_fr = String(
+    summary_fr = Text(
         analyzer='index_french', search_analyzer='search_french')
-    description_fr = String(
+    description_fr = Text(
         analyzer='index_french', search_analyzer='search_french')
 
     # it
     title_it = default_title_field()
-    summary_it = String(
+    summary_it = Text(
         analyzer='index_italian', search_analyzer='search_italian')
-    description_it = String(
+    description_it = Text(
         analyzer='index_italian', search_analyzer='search_italian')
 
     # de
     title_de = default_title_field()
-    summary_de = String(
+    summary_de = Text(
         analyzer='index_german', search_analyzer='search_german')
-    description_de = String(
+    description_de = Text(
         analyzer='index_german', search_analyzer='search_german')
 
     # en
     title_en = default_title_field()
-    summary_en = String(
+    summary_en = Text(
         analyzer='index_english', search_analyzer='search_english')
-    description_en = String(
+    description_en = Text(
         analyzer='index_english', search_analyzer='search_english')
 
     # es
     title_es = default_title_field()
-    summary_es = String(
+    summary_es = Text(
         analyzer='index_spanish', search_analyzer='search_spanish')
-    description_es = String(
+    description_es = Text(
         analyzer='index_spanish', search_analyzer='search_spanish')
 
     # ca
     title_ca = default_title_field()
-    summary_ca = String(
+    summary_ca = Text(
         analyzer='index_catalan', search_analyzer='search_catalan')
-    description_ca = String(
+    description_ca = Text(
         analyzer='index_catalan', search_analyzer='search_catalan')
 
     # eu
     title_eu = default_title_field()
-    summary_eu = String(
+    summary_eu = Text(
         analyzer='index_basque', search_analyzer='search_basque')
-    description_eu = String(
+    description_eu = Text(
         analyzer='index_basque', search_analyzer='search_basque')
 
     @staticmethod
@@ -283,11 +276,6 @@ analysis_settings = {
         "basque_stemmer": {
             "type": "stemmer",
             "language": "basque"
-        }
-    },
-    "similarity": {
-        "c2corgsimilarity": {
-            "type": "BM25"
         }
     },
     "char_filter": {

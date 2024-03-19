@@ -59,22 +59,22 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install -r dev-requirements.txt -r requirements.txt
       - name: Lint
-        run: flake8 c2corg_api es_migration
+        run: flake8 c2corg_api migrations/elasticsearch
       - name: Configure postgres
         run: |
           echo "create user \"www-data\" with password 'www-data'" | psql
-          USER=github scripts/create_user_db_test.sh
+          USER=github scripts/database/create_test_schema.sh
         env:
           PGPASSWORD: postgres
           PGUSER: postgres
           PGHOST: localhost
           PGPORT: 5432
       - name: Create config from templates
-        run: make -f config/github-actions template
+        run: make -f config/envs/github-actions template
       - name: Install java 8 for (old) elasticsearch
         uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: "adopt"
           java-version: 8
       - name: Run (old) elasticsearch
         run: |

@@ -55,6 +55,9 @@ class TestAreaRest(BaseDocumentTestRest):
     def test_get_collection_search(self):
         reset_search_index(self.session)
 
+        # FIXME : Bad test design hiding the failure reason
+        # Ex : webtest.app.AppError: Bad response: 500 Internal Server Error (not 200)
+        # self.get_collection_search is itself a test which tries to assert sthg and should not
         self.assertResultsEqual(
             self.get_collection_search({'l': 'en'}),
             [self.area4.document_id, self.area1.document_id], 2)

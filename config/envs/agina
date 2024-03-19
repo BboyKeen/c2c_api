@@ -1,4 +1,4 @@
-include config/dev
+include config/env/dev
 
 export debug_port = 6547
 export instanceid = agina

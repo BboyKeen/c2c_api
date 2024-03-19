@@ -3,4 +3,4 @@ the ElaticSearch index.
 
 To apply a migration, run the script with e.g.:
 
-    .build/venv/bin/python es_migration/2017-03-29_slackline.py development.ini
+    .build/venv/bin/python migrations/elasticsearch/2017-03-29_slackline.py development.ini

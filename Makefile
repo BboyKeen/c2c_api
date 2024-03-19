@@ -6,7 +6,7 @@ TEMPLATE_FILES = $(TEMPLATE_FILES_IN:.in=)
 export base_dir = $(abspath .)
 export site_packages = $(SITE_PACKAGES)
 
-include config/default
+include config/env/default
 
 .PHONY: help
 help:
@@ -51,7 +51,7 @@ test: .build/venv/bin/pytest template .build/dev-requirements.timestamp .build/r
 
 .PHONY: lint
 lint: .build/venv/bin/flake8
-	.build/venv/bin/flake8 c2corg_api es_migration
+	.build/venv/bin/flake8 c2corg_api migrations/elasticsearch
 	@echo "Wonderful, python style is Ok! Here is a beer : 🍺"
 
 .PHONY: install

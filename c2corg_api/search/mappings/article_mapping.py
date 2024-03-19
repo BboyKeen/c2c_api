@@ -1,10 +1,10 @@
 from c2corg_api.models.article import ARTICLE_TYPE, Article
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin, QEnum, QEnumArray
 
 
 class SearchArticle(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = ARTICLE_TYPE
 
     activities = QEnumArray(

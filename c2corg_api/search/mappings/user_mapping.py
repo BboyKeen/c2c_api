@@ -1,10 +1,10 @@
 from c2corg_api.models.user_profile import USERPROFILE_TYPE
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin
 
 
 class SearchUser(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = USERPROFILE_TYPE
 
     FIELDS = []

@@ -1,4 +1,4 @@
-include config/dev
+include config/envs/dev
 
 export debug_port = 6546
 export instanceid = gberaudo

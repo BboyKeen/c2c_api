@@ -14,6 +14,7 @@ sqlalchemy.pool_size=20
 
 elasticsearch.host = {elasticsearch_host}
 elasticsearch.port = {elasticsearch_port}
+elasticsearch.scheme = {elasticsearch_scheme}
 elasticsearch.index = {elasticsearch_index}
 elasticsearch.pool = 50
 

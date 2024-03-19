@@ -1,0 +1,71 @@
+version: "3.7"
+services:
+  api:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgresql
+      - elasticsearch
+      - redis
+    ports:
+      - 6543:6543
+      - 5678:5678
+    environment:
+      db_host: "postgresql"
+      tests_db_host: "postgresql"
+      elasticsearch_host: "elasticsearch"
+      tests_elasticsearch_host: "elasticsearch"
+      redis_url: "redis://redis:6379/"
+      version: ""
+    volumes:
+      - ./alembic_migration:/var/www/alembic_migration
+      - ./c2corg_api:/var/www/c2corg_api
+      - ./Makefile:/var/www/Makefile
+      - ./ini.in/common.ini.in:/var/www/common.ini.in
+      - ./ini.in/development.ini.in:/var/www/development.ini.in
+      - ./ini.in/test.ini.in:/var/www/test.ini.in
+      - ./pytest.ini:/var/www/pytest.ini
+      - .build/venv:/var/www/.build/venv/
+      - ./scripts:/var/www/scripts
+    command: make -f config/envs/docker-dev serve
+
+  postgresql:
+    image: postgis/postgis
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: www-data
+      POSTGRES_PASSWORD: www-data
+    # volumes:
+    #   - ./scripts/database:/scripts
+    command: ["postgres", "-c", "max_connections=200"]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      # This option disables the security warning
+      - xpack.security.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+
+  redis:
+    image: "docker.io/redis:7.0.5"
+    ports:
+      - 6379:6379
+
+volumes:
+  es-data01:
+    driver: local

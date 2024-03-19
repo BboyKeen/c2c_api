@@ -1,4 +1,4 @@
-include config/dev
+include config/envs/dev
 
 export instanceid = github
 export base_url = /${instanceid}

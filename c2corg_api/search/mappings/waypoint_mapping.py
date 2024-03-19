@@ -1,5 +1,5 @@
 from c2corg_api.models.waypoint import WAYPOINT_TYPE, Waypoint
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin, QInteger, \
     QEnumArray, QEnum, QBoolean, QEnumRange, QEnumRangeMinMax, QNumberRange
 from c2corg_api.models.common.sortable_search_attributes import \
@@ -9,7 +9,7 @@ from c2corg_api.models.common.sortable_search_attributes import \
 
 
 class SearchWaypoint(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = WAYPOINT_TYPE
 
     elevation = QInteger(

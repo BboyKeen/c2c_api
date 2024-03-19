@@ -51,7 +51,7 @@ def setup_es():
     info = client.info()
     print('ElasticSearch version: {0}'.format(info['version']['number']))
 
-    if client.indices.exists(index_name):
+    if client.indices.exists(index=index_name):
         print('Index "{0}" already exists. To re-create the index, manually '
               'delete the index and run this script again.'.format(index_name))
         print('To delete the index run:')
@@ -60,19 +60,19 @@ def setup_es():
             index_name))
         sys.exit(0)
 
-    index = Index(index_name)
+    index = Index(name=index_name)
     index.settings(analysis=analysis_settings)
 
-    index.doc_type(SearchArea)
-    index.doc_type(SearchBook)
-    index.doc_type(SearchImage)
-    index.doc_type(SearchOuting)
-    index.doc_type(SearchXreport)
-    index.doc_type(SearchRoute)
-    index.doc_type(SearchTopoMap)
-    index.doc_type(SearchUser)
-    index.doc_type(SearchWaypoint)
-    index.doc_type(SearchArticle)
+    index.document(SearchArea)
+    index.document(SearchBook)
+    index.document(SearchImage)
+    index.document(SearchOuting)
+    index.document(SearchXreport)
+    index.document(SearchRoute)
+    index.document(SearchTopoMap)
+    index.document(SearchUser)
+    index.document(SearchWaypoint)
+    index.document(SearchArticle)
 
     index.create()
 
@@ -82,7 +82,7 @@ def setup_es():
 def drop_index(silent=True):
     """Remove the ElasticSearch index.
     """
-    index = Index(elasticsearch_config['index'])
+    index = Index(name=elasticsearch_config['index'])
     try:
         index.delete()
     except Exception as exc:

@@ -1,5 +1,5 @@
 from c2corg_api.models.xreport import XREPORT_TYPE, Xreport
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin, \
     QEnumArray, QInteger, QDate, QEnumRange
 
@@ -8,7 +8,7 @@ from c2corg_api.models.common.sortable_search_attributes import \
 
 
 class SearchXreport(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = XREPORT_TYPE
 
     event_activity = QEnumArray(

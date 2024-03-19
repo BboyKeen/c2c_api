@@ -28,6 +28,17 @@ debugtoolbar.hosts = 0.0.0.0/0
 
 show_debugger_for_errors = {show_debugger_for_errors}
 
+# Setting this to True will enable remote debugging using DebugPy
+enable_remote_debug = False
+enable_remote_debug_for_tests = False
+
+# Setting this to True will activate the debug logging
+# https://elastic-transport-python.readthedocs.io/en/latest/logging.html
+
+elasticsearch.debug_logging = True
+
+app_env = dev
+
 ###
 # wsgi server configuration
 ###
@@ -52,7 +63,7 @@ keys = console
 keys = generic
 
 [logger_root]
-level = INFO
+level = DEBUG
 handlers = console
 
 [logger_c2corg_api]

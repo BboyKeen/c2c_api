@@ -9,11 +9,11 @@ def reset_search_index(session):
     initializees.drop_index()
     initializees.setup_es()
     fill_index(session)
-    force_search_index()
+    refresh_search_index()
 
 
-def force_search_index():
+def refresh_search_index():
     """Force that the search index is updated.
     """
     elasticsearch_config['client'].indices.refresh(
-        elasticsearch_config['index'])
+        index=elasticsearch_config['index'])

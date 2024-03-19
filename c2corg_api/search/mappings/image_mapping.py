@@ -1,11 +1,11 @@
 from c2corg_api.models.image import IMAGE_TYPE, Image
-from c2corg_api.search.mapping import SearchDocument, BaseMeta
+from c2corg_api.search.mapping import SearchDocument
 from c2corg_api.search.mapping_types import QueryableMixin, QEnumArray, \
     QInteger, QDate
 
 
 class SearchImage(SearchDocument):
-    class Meta(BaseMeta):
+    class Meta:
         doc_type = IMAGE_TYPE
 
     activities = QEnumArray(

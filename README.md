@@ -36,8 +36,8 @@ Press CTRL+C to terminate it.
 In distinct terminals:
 
 ```sh
-docker-compose exec api make -f config/docker-dev run-background-jobs
-docker-compose exec api make -f config/docker-dev run-syncer
+docker-compose exec api make -f config/envs/docker-dev run-background-jobs
+docker-compose exec api make -f config/envs/docker-dev run-syncer
 ```
 
 ### Check code quality
@@ -56,7 +56,7 @@ In another terminal (`docker-compose up` must be running) :
 # full tests, take a while
 ./scripts/test.sh
 
-# If you need to test a specific point: 
+# If you need to test a specific point:
 ./scripts/test.sh c2corg_api/tests/models/test_book.py
 
 # or:

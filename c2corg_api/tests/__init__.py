@@ -32,7 +32,6 @@ from c2corg_api.security.roles import create_claims, add_or_retrieve_token
 from c2corg_api.scripts import initializedb, initializees
 from c2corg_api.search import configure_es_from_config
 
-
 log = logging.getLogger(__name__)
 
 curdir = os.path.dirname(os.path.abspath(__file__))
@@ -165,7 +164,12 @@ def _add_global_test_data(session):
 
 
 def setup_package():
-
+    import debugpy
+    debugpy.listen(("0.0.0.0", 5678))
+    log.debug('DebugPy waiting for client to attach')
+    debugpy.wait_for_client()
+    log.debug('Client connected')
+    
     # set up database
     engine = get_engine()
     DBSession.configure(bind=engine)

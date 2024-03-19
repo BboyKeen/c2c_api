@@ -25,6 +25,8 @@ from elasticsearch_dsl.connections import connections
 from elasticsearch_dsl.query import MultiMatch
 from kombu import Exchange, Queue, pools
 from kombu.connection import Connection
+from pyramid.settings import asbool
+import elastic_transport
 
 # the maximum number of documents that can be returned for each document type
 SEARCH_LIMIT_MAX = 50
@@ -42,13 +44,23 @@ elasticsearch_config = {
 
 
 def client_from_config(settings):
-    return Elasticsearch([{
+    host_config = {
         'host': settings['elasticsearch.host'],
-        'port': int(settings['elasticsearch.port'])
-    }], maxsize=int(settings['elasticsearch.pool']))
+        'port': int(settings['elasticsearch.port']),
+        'scheme': settings.get('elasticsearch.scheme', 'https')
+    }
+
+    extra_config = {
+        'maxsize':int(settings['elasticsearch.pool'])
+    }
+
+    return Elasticsearch([host_config], **extra_config)
 
 
 def configure_es_from_config(settings):
+    if asbool(settings.get('elasticsearch.debug_logging', False)):
+        elastic_transport.debug_logging()
+
     global elasticsearch_config
     client = client_from_config(settings)
     connections.add_connection('default', client)
