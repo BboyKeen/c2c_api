@@ -12,7 +12,6 @@
 *.pyc
 *.egg-info
 /.idea
-/.vscode
 .noseids
 /env_api
 /venv
